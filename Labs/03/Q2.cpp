@@ -31,7 +31,7 @@ public:
     void printList() {
         Node* current = head;
         while (current) {
-            scout << current->value << " -> ";
+            cout << current->value << " -> ";
             current = current->next;
         }
         cout << "nullptr" << endl;
@@ -48,15 +48,6 @@ public:
             current = nextNode;       
         }
         head = previous;
-    }
-
-    ~LinkedList() {
-        Node* current = head;
-        while (current) {
-            Node* next = current->next;
-            delete current;
-            current = next;
-        }
     }
 };
 
