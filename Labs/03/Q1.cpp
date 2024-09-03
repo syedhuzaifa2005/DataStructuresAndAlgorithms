@@ -1,174 +1,145 @@
-#include<iostream>
-
+#include <iostream>
 using namespace std;
 
 class Node{
-    private:
-        int data;
-        Node* next;
-
-    public:
-        Node() {
-            data = 0;
-            next = NULL;
-        }
-        Node(const int val) {
-            data = val;
-            next = NULL;
-        }
-        friend class testLinkList;
-
+public:
+    int value;
+    Node* next;
+    
+    Node(int val){
+        value = val;
+        next = NULL;
+    }
 };
 
-class testLinkList{
-    private:
-        Node* head;
+// Insert a Value at the Head
+void insertAtHead(Node* &head, int value){
+    Node* new_node = new Node(value);
+    new_node->next = head;
+    head = new_node;
+}
 
-    public:
-        testLinkList() {
-            head = NULL;
-        }
-        testLinkList(Node* n) {
-            head = n;
-        }
+// Insert a Value at the Tail
+void insertAtTail(Node* &head, int value){
+    Node* new_node = new Node(value);
+    Node* temp = head;
+    while(temp->next != NULL){
+        temp = temp->next;
+    }
+    temp->next = new_node;
+}
 
-        void insert_start(const int val){
-            Node* n = new Node(val);
-            if(head == NULL) {
-                head = n;
-            } else {
-                n->next = head;
-                head = n;
-            }
-        }
+// Insert at an arbitrary Position
+void insertAtGivenPosition(Node* &head, int value, int position){
+    if(position == 0){
+        insertAtHead(head, value);
+        return;
+    }
+    Node* new_node = new Node(value);
+    Node* temp = head;
+    int curr = 0;
+    while(curr != position-1){
+        temp = temp->next;
+        curr++;
+    }
+    new_node->next = temp->next;
+    temp->next = new_node;
+}
 
-        void insert_end(const int val) {
-            Node* n = new Node(val);
-            if(head == NULL) {
-                head == n;
-            } else {
-                Node* current = head;
-                while(current->next != NULL){
-                    current = current->next;
-                }
-                current->next = n;
-                n->next = NULL;
-            }
-        }
+// Updating Value at given Position
+void updateValue(Node* &head, int value, int position){
+    Node* temp = head;
+    int curr = 0;
+    while(curr != position){
+        temp = temp->next;
+        curr++;
+    }
+    temp->value = value;
+}
 
-        void insert_After(const int value, const int insertingVal) {
-            if(head != NULL){
-                Node* n = new Node(insertingVal);
-                Node* currentptr = head;
-                while(currentptr->data != value) {
-                    currentptr = currentptr -> next;
-                } 
-                n-> next = currentptr->next;
-                currentptr->next = n;
-            } else {
-                cout<<"no node with this value"<<endl;
-            }
-        }
+// Deleting the Value at Head
+void deleteHead(Node* &head){
+    Node* temp = head;
+    head = head->next;
+    delete temp;
+}
 
-        void insert_Before(const int value, const int insertingVal) {
-            if(head != NULL) {
-                Node* n = new Node(insertingVal);
-                Node* currentptr = head;
-                while(currentptr->next->data != value) {
-                    currentptr = currentptr -> next;
-                }
-                n-> next = currentptr->next;
-                currentptr->next = n;
-            } else {
-                cout<<"the value doesnt exist in the LL"<<endl;
-            }
-        }
+// Deleting the Value at Tail
+void deleteTail(Node* &head){
+    Node* temp = head;
+    while(temp->next->next != NULL){
+        temp = temp->next;
+    }
+    delete temp->next;
+    temp->next = NULL;
+}
 
-        void delete_Head() {
-            if(head != NULL) {
-                Node* currentptr = head;
-                head = currentptr-> next;
-                delete currentptr;
-                currentptr = NULL;
-            } else {
-                cout<<"List has no nodes to delete at head"<<endl;
-            }
-        }
+// Deleting the Value at an Arbitrary Position
+void deleteAtGivenPosition(Node* &head, int position){
+    if(position == 0){
+        deleteHead(head);
+        return;
+    }
+    int curr = 0;
+    Node* prev = head;
+    while(curr != position-1){
+        prev = prev->next;
+        curr++;
+    }
+    Node* temp = prev->next;
+    prev->next = prev->next->next;
+    delete temp;
+}
 
-        void delete_Tail() {
-            if(head != NULL) {
-                Node* currentptr = head;
-                while(currentptr->next->next != NULL){
-                    currentptr = currentptr-> next;
-                }
-                Node* temp = currentptr-> next;
-                currentptr->next = NULL;
-                delete temp;
-                temp = NULL;
-            } else{
-                cout<<"\nthe list is already empty"<<endl;
-            }
-        }
+// Count the Number of Nodes
+int countNodes(Node* &head){
+    int count = 0;
+    Node* temp = head;
+    while(temp != NULL){
+        temp = temp->next;
+        count++;
+    }
+    return count;
+}
 
-        void delete_at_val(const int val) {
-            if(head != NULL) {
-                Node* currentptr = head;
-                while(currentptr->data != val) {
-                    currentptr = currentptr -> next;
-                }
-                Node* temp = currentptr->next;
-                currentptr->next = temp->next;
-                delete temp;
-            }
-        }
+// Displaying the List
+void displayList(Node* head){
+    Node* temp = head;
+    while(temp != NULL){
+        cout << temp->value << " -> ";
+        temp = temp->next;
+    }
+    cout << "NULL" << endl;
+}
 
-        void count_Nodes() {
-            int sum = 0;
-            Node* currentptr = head;
-            if(head != NULL) {
-                while(currentptr->next != NULL) {
-                    sum = sum + 1;
-                    currentptr = currentptr->next;
-                }
-                cout<<"the number of node in the linked list are "<<sum+1<<endl;
-            } else {
-                cout<<"number of nodes is 0"<<endl;
-            }
-        }
-
-        void display_List() {
-            Node* currentptr = head;
-            while(currentptr != NULL) {
-                cout<<currentptr->data<<"->";
-                currentptr = currentptr->next;
-            }
-            cout<<"END OF LIST"<<endl;
-            
-        }
-};
-
-int main () {
-    testLinkList test_list;
-    test_list.insert_start(5);
-    test_list.insert_start(6);
-    test_list.insert_start(7);
-    test_list.insert_start(8);
-    test_list.insert_start(9);
-    test_list.display_List();
-
-    test_list.insert_end(10);
-    test_list.insert_end(11);
-    test_list.insert_end(12);
-    test_list.insert_end(13);
-    test_list.insert_end(14);
-    test_list.display_List();
-    test_list.insert_After(8,50);
-    test_list.insert_Before(8,40);
-    test_list.display_List();
-
-    test_list.delete_Head();
-    test_list.delete_Tail();
-    test_list.delete_at_val(12);
-    test_list.display_List();
-    test_list.count_Nodes();
+int main() {
+    Node* head = NULL;
+// Insertion at Head
+    insertAtHead(head, 4);
+    displayList(head);
+    insertAtHead(head, 9);
+    displayList(head);
+// Insertion at Tail
+    insertAtTail(head, 3);
+    displayList(head);
+    insertAtTail(head, 2);
+    displayList(head);
+// Insertion at Position
+    insertAtGivenPosition(head, 1, 2);
+    displayList(head);
+// Updating value at position
+    updateValue(head, 10, 2);
+    displayList(head);
+// Deleting at Head
+    deleteHead(head);
+    displayList(head);
+// Deleting at Tail
+    deleteTail(head);
+    displayList(head);
+// Deleting at Position
+    deleteAtGivenPosition(head, 1);
+    displayList(head);
+// Number of Nodes
+    cout << "The Number of Nodes in the Linked List are " << countNodes(head) << endl;
+    return 0;
 }
