@@ -1,5 +1,6 @@
 #include <iostream>
 #include <vector>
+#include <cmath>
 using namespace std;
 
 void bubbleSort(vector<int>& v) {
@@ -59,6 +60,30 @@ void shellSort(vector<int>& v) {
     }
 }
 
+void combSort(vector<int>& vec) {
+    const double shrinkFactor = 1.3;
+    int n = vec.size();
+    int gap = n;
+    bool swapped = true;
+
+    while (gap > 1 || swapped) {
+        gap = static_cast<int>(floor(gap / shrinkFactor));
+        if (gap < 1) {
+            gap = 1;
+        }
+
+        swapped = false;
+
+        for (int i = 0; i + gap < n; ++i) {
+            if (vec[i] > vec[i + gap]) {
+                swap(vec[i], vec[i + gap]);
+                swapped = true;
+            }
+        }
+    }
+}
+
+
 
 int main() {
     vector<int> v1 = {6, 2, 1, 8, 9, 3};
@@ -93,6 +118,15 @@ int main() {
 	cout << "Sorted array using Shell Sort: ";
 	for(int i = 0; i < v4.size(); i++) {
         cout << v4[i] << " ";
+    }
+    cout << endl;
+    
+    
+    vector<int> v5 = {13, 9, 7, 15, 8, 3, 20, 10};
+	combSort(v5);
+	cout << "Sorted array using Comb Sort: ";
+	for(int i = 0; i < v5.size(); i++) {
+        cout << v5[i] << " ";
     }
     cout << endl;
 
